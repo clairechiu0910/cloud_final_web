@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="apple-touch-icon" sizes="76x76" href="/static/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="/static/img/favicon.png">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <title>
+    Data History
+  </title>
+  <meta content='width=device-width, initial-scale=1.0,F maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
+    name='viewport' />
+  <!--     Fonts and icons     -->
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
+    integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+  <!-- CSS Files -->
+  <link href="/static/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="/static/css/now-ui-dashboard.css?v=1.5.0" rel="stylesheet" />
+  <!-- CSS Just for demo purpose, don't include it in your project -->
+  <link href="/static/demo/demo.css" rel="stylesheet" />
+</head>
+
+<body class="">
+  <div class="wrapper ">
+    <div class="sidebar" data-color="blue">
+      <div class="logo">
+        <a class="simple-text logo-normal">
+          Cloud Final - Team 5
+        </a>
+      </div>
+      <div class="sidebar-wrapper" id="sidebar-wrapper">
+        <ul class="nav">
+          <li>
+            <a href="/notifications">
+              <i class="now-ui-icons ui-1_bell-53"></i>
+              <p>Notifications</p>
+            </a>
+          <li class="active">
+            <a href="/data_history">
+              <i class="now-ui-icons design_app"></i>
+              <p>Data History</p>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="main-panel" id="main-panel">
+      <nav class="navbar navbar-expand-lg navbar-transparent  bg-primary  navbar-absolute">
+        <div class="container-fluid">
+          <div class="navbar-wrapper">
+            <div class="navbar-toggle">
+              <button type="button" class="navbar-toggler">
+                <span class="navbar-toggler-bar bar1"></span>
+                <span class="navbar-toggler-bar bar2"></span>
+                <span class="navbar-toggler-bar bar3"></span>
+              </button>
+            </div>
+            <a class="navbar-brand">Data History</a>
+          </div>
+          <div class="collapse navbar-collapse justify-content-end" id="navigation">
+          </div>
+        </div>
+      </nav>
+      <div class="panel-header">
+        <div class="header text-center">
+          <h2 class="title">Data History</h2>
+          <p class="category">Data Detected from Arduino and Raspberry Pi</p>
+        </div>
+      </div>
+      <div class="content">
+        <div class="row">
+          <div class="card">
+            <div class="card-header">
+              <h4 class="card-title">Temperature and Humility</h4>
+            </div>
+            <div class="card-body">
+              <div id="app">
+                <div id="chart">
+                  <apexchart type="area" height="350" :options="chartOptions" :series="series"></apexchart>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--   Core JS Files   -->
+  <script src="/static/js/core/jquery.min.js"></script>
+  <script src="/static/assets/js/core/popper.min.js"></script>
+  <script src="/static/assets/js/core/bootstrap.min.js"></script>
+  <script src="/static/assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+  <!--  Notifications Plugin    -->
+  <script src="/static/assets/js/plugins/bootstrap-notify.js"></script>
+  <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="/static/assets/js/now-ui-dashboard.min.js?v=1.5.0" type="text/javascript"></script>
+
+  <!--  Apexcharts and Vue  -->
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue-apexcharts"></script>
+
+  <script>
+    new Vue({
+      el: '#app',
+      components: {
+        apexchart: VueApexCharts,
+      },
+      data: {
+        series: [{
+          name: 'series1',
+          data: [31, 40, 28, 51, 42, 109, 100]
+        }, {
+          name: 'series2',
+          data: [11, 32, 45, 32, 34, 52, 41]
+        }],
+        chartOptions: {
+          chart: {
+            height: 350,
+            type: 'area'
+          },
+          dataLabels: {
+            enabled: false
+          },
+          stroke: {
+            curve: 'smooth'
+          },
+          xaxis: {
+            type: 'datetime',
+            categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z",
+              "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z",
+              "2018-09-19T06:30:00.000Z"
+            ]
+          },
+          tooltip: {
+            x: {
+              format: 'dd/MM/yy HH:mm'
+            },
+          },
+        },
+
+
+      },
+
+    })
+  </script>
+  <script>
+    // Replace Math.random() with a pseudo-random number generator to get reproducible results in e2e tests
+    // Based on https://gist.github.com/blixt/f17b47c62508be59987b
+    var _seed = 42;
+    Math.random = function () {
+      _seed = _seed * 16807 % 2147483647;
+      return (_seed - 1) / 2147483646;
+    };
+  </script>
+  <style>
+    #chart {
+      max-width: 100%;
+      margin: 3% auto;
+    }
+  </style>
+
+  <script>
+    window.Promise ||
+      document.write(
+        '<script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"><\/script>'
+      )
+    window.Promise ||
+      document.write(
+        '<script src="https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20171210/classList.min.js"><\/script>'
+      )
+    window.Promise ||
+      document.write(
+        '<script src="https://cdn.jsdelivr.net/npm/findindex_polyfill_mdn"><\/script>'
+      )
+  </script>
+</body>
+
+</html>
