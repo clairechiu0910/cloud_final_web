@@ -1,4 +1,4 @@
- zfrom flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify
 from ddbRepo import ArduinoDataRepo
 import json
 import boto3 
