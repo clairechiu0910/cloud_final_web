@@ -41,19 +41,18 @@ def get_model_pred(t_h):
     import json 
     # return t_h 
     endpoint = 'xgboost-2021-06-18-13-39-26-663'
-    aws_access_key_id='AKIARO6BBYISELMJLXMD'
-    aws_secret_access_key='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'
+    aws_access_key_id='AKIARO6BBYISFZ4Q4Y76'
+    aws_secret_access_key='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'
 
     runtime = boto3.client('sagemaker-runtime', region_name="us-east-1", aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
-    
     csv_text = '12, 90, 6'
     # Send CSV text via InvokeEndpoint API
     response = runtime.invoke_endpoint(EndpointName=endpoint, ContentType='text/csv', Body=csv_text)
-    # Unpack response
     result = json.loads(response['Body'].read().decode())
-    print(result)
-
+    result = str(result)
+    
     return result
+    
 
 if __name__ == "__main__":
     application.debug = True
