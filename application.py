@@ -39,10 +39,10 @@ def get_temperature_humidity():
 def get_model_pred():
     import boto3 
     import json 
-    # tmp, hum = ArduinoDataRepo().get_latest_data()
+    tmp, hum = ArduinoDataRepo().get_latest_data()
     
-    tmp = 30
-    hum = 90
+    # tmp = 30
+    # hum = 90
     endpoint = 'xgboost-2021-06-18-13-39-26-663'
     aws_access_key_id=''
     aws_secret_access_key=''
