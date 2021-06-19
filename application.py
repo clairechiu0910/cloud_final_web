@@ -1,6 +1,8 @@
 from flask import Flask, render_template, jsonify
 from ddbRepo import ArduinoDataRepo
 import json
+import boto3 
+
 
 application = Flask(__name__)
 jinja_options = application.jinja_options.copy()
@@ -32,6 +34,23 @@ def get_temperature_humidity():
         'temperature': temperature
     })
     return jsonify(data)
+
+@application.route('/api/pred/d/')
+def get_rain_pred():
+    endpoint = 'xgboost-2021-06-18-13-39-26-663'
+ 
+    runtime = boto3.Session().client('sagemaker-runtime')
+    
+    csv_text = '12, 90, 6'
+    # Send CSV text via InvokeEndpoint API
+    response = runtime.invoke_endpoint(EndpointName=endpoint, ContentType='text/csv', Body=csv_text)
+    # Unpack response
+    result = json.loads(response['Body'].read().decode())
+    print(result)
+
+    return jsonify(result)
+
+
 
 if __name__ == "__main__":
     application.debug = True
