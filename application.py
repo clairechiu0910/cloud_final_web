@@ -1,4 +1,5 @@
 from flask import Flask, render_template, jsonify
+from flask import request
 from ArduinoDataRepo import ArduinoDataRepo
 import json
 import boto3 
@@ -34,25 +35,31 @@ def get_temperature_humidity():
     }
     return jsonify(data)
 
-@application.route('/api/pred/<t_h>', methods=['GET'])
-def get_model_pred(t_h):
+@application.route('/api/pred/', methods=['GET'])
+def get_model_pred():
     import boto3 
     import json 
-    # return t_h 
-    endpoint = ''
+    # tmp, hum = ArduinoDataRepo().get_latest_data()
+    
+    tmp = 30
+    hum = 90
+    endpoint = 'xgboost-2021-06-18-13-39-26-663'
     aws_access_key_id=''
     aws_secret_access_key=''
 
     runtime = boto3.client('sagemaker-runtime', region_name="us-east-1", aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
-    csv_text = '12, 90, 6'
-    # Send CSV text via InvokeEndpoint API
-    response = runtime.invoke_endpoint(EndpointName=endpoint, ContentType='text/csv', Body=csv_text)
-    result = json.loads(response['Body'].read().decode())
-    result = str(result)
-    
 
-    # send sns to notify with url 
-    send_mail_to_notify(result)
+    text = str(tmp) + ',' + str(hum) + ',10'
+    
+    
+    response = runtime.invoke_endpoint(EndpointName=endpoint, ContentType='text/csv', Body=text)
+    result = json.loads(response['Body'].read().decode())
+    result_float = float(result)
+
+    #sns
+    send_mail_to_notify(result_float)
+    
+    result = str(result)
 
 
     model_pred = {
@@ -61,20 +68,22 @@ def get_model_pred(t_h):
     return jsonify(model_pred)
     
 def send_mail_to_notify(result):
-    result = float(result) * 100
-    if result <= 0.5:
+    result = result * 100 
+    result = float("{0:.2f}".format(result))
+    if result <= 50:
         # 低機率會下雨
         sub = "【保持平常心】您的衣服正在曝曬中"
-        msg = "您好, \n請保持平常心！目前僅有" + result +"% 可能會降雨。\n請安心繼續讓衣服持續曝曬。\n\n\n\n\n------Best Regards, 收衣機"
-    elif result > 0.5 and result <= 0.8:
+        msg = "您好, \n請保持平常心！目前僅有" + str(result) +"% 可能會降雨。\n請安心繼續讓衣服持續曝曬。\n不過，也許你想收衣服了，那請點以下連結告訴我\nhttp://finalgroup5.us-east-1.elasticbeanstalk.com/notifications\n\n\n\n\n------\nBest Regards, 收衣機"
+    elif result > 50 and result <= 80:
         sub = "【保持平常心】別擔心！我們會幫您隨時注意天氣"
-        msg = "您好, \n降雨機率來到了" + result +"%！\n請安心繼續讓衣服持續曝曬，降雨時再呼喚我們。\n\n不過，也許你想收衣服了，那請點以下連結告訴我。\n\n\n------Best Regards, 收衣機"
-    elif result > 0.8:
+        msg = "您好, \n降雨機率來到了" + str(result) +"%！\n請安心繼續讓衣服持續曝曬，降雨時再呼喚我們。\n\n不過，也許你想收衣服了，那請點以下連結告訴我。http://finalgroup5.us-east-1.elasticbeanstalk.com/notifications\n\n\n-----\nBest Regards, 收衣機"
+    elif result > 80:
         sub = "【我的天，要下雨啦】趕快收衣服"
-        msg = "您好, \n降雨機率來到了" + result +"%！\n我們強烈建議您點選以下網址，告訴我們您的決定。\n\n\n\n------Best Regards, 收衣機"
+        msg = "您好, \n降雨機率來到了" + str(result) +"%！\n我們強烈建議您點選以下網址，告訴我們您的決定。\nhttp://finalgroup5.us-east-1.elasticbeanstalk.com/notifications\n\n\n\n------\nBest Regards, 收衣機"
     
     cli = boto3.client('sns', region_name="us-east-1")
-    response = client.publish(
+
+    response = cli.publish(
         TopicArn='arn:aws:sns:us-east-1:099287135517:finalproj',
         Message=msg,
         Subject=sub,
