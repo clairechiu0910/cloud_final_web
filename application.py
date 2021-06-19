@@ -35,20 +35,20 @@ def get_temperature_humidity():
     })
     return jsonify(data)
 
-@application.route('/api/pred/d/')
-def get_rain_pred():
-    endpoint = 'xgboost-2021-06-18-13-39-26-663'
+# @application.route('/api/pred/d/')
+# def get_rain_pred():
+#     endpoint = 'xgboost-2021-06-18-13-39-26-663'
  
-    runtime = boto3.Session().client('sagemaker-runtime')
+#     runtime = boto3.Session().client('sagemaker-runtime')
     
-    csv_text = '12, 90, 6'
-    # Send CSV text via InvokeEndpoint API
-    response = runtime.invoke_endpoint(EndpointName=endpoint, ContentType='text/csv', Body=csv_text)
-    # Unpack response
-    result = json.loads(response['Body'].read().decode())
-    print(result)
+#     csv_text = '12, 90, 6'
+#     # Send CSV text via InvokeEndpoint API
+#     response = runtime.invoke_endpoint(EndpointName=endpoint, ContentType='text/csv', Body=csv_text)
+#     # Unpack response
+#     result = json.loads(response['Body'].read().decode())
+#     print(result)
 
-    return jsonify(result)
+#     return jsonify(result)
 
 
 
