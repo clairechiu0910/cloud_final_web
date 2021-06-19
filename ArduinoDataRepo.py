@@ -13,7 +13,6 @@ class ArduinoDataRepo():
             FilterExpression=Attr('day').eq(datetime.now().day)
         )
         items = response['Items']
-        print(type(items))
         items.sort(key=lambda item: datetime.strptime(item['time'], '%Y/%m/%d %H:%M:%S'))
         time = list()
         humidity = list()
@@ -25,5 +24,18 @@ class ArduinoDataRepo():
             temperature.append(float(item['temperature']))
         return time, humidity, temperature
     
+    def get_latest_data(self):
+        response = self.table.scan(
+            FilterExpression=Attr('day').eq(datetime.now().day)
+        )
+        items = response['Items']
+        items.sort(key=lambda item: datetime.strptime(item['time'], '%Y/%m/%d %H:%M:%S'), reverse=True)
+        humidity = float(items[0]['humidity'])
+        temperature = float(items[0]['temperature'])
+        return humidity, temperature
+        
+        
+    
 if __name__ == '__main__':
     print(ArduinoDataRepo().get_today_data())
+    print(ArduinoDataRepo().get_latest_data())
