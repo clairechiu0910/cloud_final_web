@@ -1,5 +1,6 @@
-from flask import Flask, render_template
-
+from flask import Flask, render_template, jsonify
+from ddbRepo import ArduinoDataRepo
+import json
 
 application = Flask(__name__)
 jinja_options = application.jinja_options.copy()
@@ -22,8 +23,15 @@ def notifications():
 def data_history():
     return render_template('data_history.html')
 
-
-
+@application.route('/api/t_h/d/')
+def get_temperature_humidity():
+    time, himidity, temperature = ArduinoDataRepo().get_today_data()
+    data = json.dumps({
+        'time': time,
+        'himidity': himidity,
+        'temperature': temperature
+    })
+    return jsonify(data)
 
 if __name__ == "__main__":
     application.debug = True
