@@ -1,5 +1,5 @@
 from flask import Flask, render_template, jsonify
-from ddbRepo import ArduinoDataRepo
+from ArduinoDataRepo import ArduinoDataRepo
 import json
 import boto3 
 
