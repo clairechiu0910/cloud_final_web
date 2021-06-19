@@ -1,6 +1,8 @@
 from flask import Flask, render_template, jsonify
 from flask import request
 from ArduinoDataRepo import ArduinoDataRepo
+from DB_rainRepo import DB_rainRepo
+from predictionRepo import predictionRepo
 import json
 import boto3 
 
@@ -34,6 +36,16 @@ def get_temperature_humidity():
         'temperature': temperature
     }
     return jsonify(data)
+
+@application.route('/api/pi/', methods=['GET'])
+def get_pi_all_data():
+    states = DB_rainRepo().get_all_data()
+    return jsonify(states)
+
+@application.route('/api/model/', methods=['GET'])
+def get_model_all_data():
+    results = predictionRepo().get_all_data()
+    return jsonify(results)
 
 @application.route('/api/pred/', methods=['GET'])
 def get_model_pred():

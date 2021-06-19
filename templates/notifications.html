@@ -77,8 +77,13 @@
                 <h4 class="card-title">Weather Predictions</h4>
               </div>
               <div class="card-body">
-                <div class="alert alert-info">
-                  <span>This is a plain notification</span>
+                <div id="model-app">
+                  <template v-for="item in model_results">
+                    <div class="alert alert-info">
+                      <h6>{{item.date}}</h6>
+                        <span><b> Probability - </b> {{item.result}}</span>
+                    </div>
+                  </template>
                 </div>
               </div>
             </div>
@@ -89,11 +94,21 @@
                 <h4 class="card-title">Rain Detections</h4>
               </div>
               <div class="card-body">
-                <div class="alert alert-danger">
-                  <button type="button" aria-hidden="true" class="close">
-                    <i class="now-ui-icons ui-1_simple-remove"></i>
-                  </button>
-                  <span><b> Danger - </b> This is a regular notification made with ".alert-danger"</span>
+                <div id="pi-app">
+                  <template v-for="item in pi_states">
+                    <template v-if="item.is_rain">
+                      <div class="alert alert-warning">
+                        <h6>{{item.date}}</h6>
+                        <span>{{item.rain}} {{item.cloth}}</span>
+                      </div>
+                    </template>
+                    <template v-else>
+                      <div class="alert alert-info">
+                        <h6>{{item.date}}</h6>
+                        <span>{{item.rain}} {{item.cloth}}</span>
+                      </div>
+                    </template>
+                  </template>
                 </div>
               </div>
             </div>
@@ -105,8 +120,6 @@
       <script src="/static/js/core/popper.min.js"></script>
       <script src="/static/js/core/bootstrap.min.js"></script>
       <script src="/static/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-      <!--  Google Maps Plugin    -->
-      <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
       <!-- Chart JS -->
       <script src="/static/js/plugins/chartjs.min.js"></script>
       <!--  Notifications Plugin    -->
@@ -129,7 +142,8 @@
             'Content-Type': 'text/html'
           })
           .then(function (response) {
-
+            console.log(response.data);
+            pi_app.pi_states = response.data;
           })
           .catch(function (error) {
             console.log(error);
@@ -139,6 +153,26 @@
           el: '#pi-app',
           data: {
             pi_states: null
+          }
+        })
+
+        axios({
+            method: 'get',
+            url: '/api/model/',
+            'Content-Type': 'text/html'
+          })
+          .then(function (response) {
+            console.log(response.data);
+            model_app.model_results = response.data;
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+
+        var model_app = new Vue({
+          el: '#model-app',
+          data: {
+            model_results: null
           }
         })
       </script>
