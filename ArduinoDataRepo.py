@@ -4,7 +4,7 @@ from datetime import datetime
 
 class ArduinoDataRepo():
     def __init__(self):
-        dynamodb = boto3.resource('dynamodb')
+        dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
 
         self.table = dynamodb.Table('ArduinoData')
         
