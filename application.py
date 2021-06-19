@@ -50,11 +50,36 @@ def get_model_pred(t_h):
     result = json.loads(response['Body'].read().decode())
     result = str(result)
     
+
+    # send sns to notify with url 
+    send_mail_to_notify(result)
+
+
     model_pred = {
         'prediction_result': result
     }
     return jsonify(model_pred)
     
+def send_mail_to_notify(result):
+    result = float(result) * 100
+    if result <= 0.5:
+        # 低機率會下雨
+        sub = "【保持平常心】您的衣服正在曝曬中"
+        msg = "您好, \n請保持平常心！目前僅有" + result +"% 可能會降雨。\n請安心繼續讓衣服持續曝曬。\n\n\n\n\n------Best Regards, 收衣機"
+    elif result > 0.5 and result <= 0.8:
+        sub = "【保持平常心】別擔心！我們會幫您隨時注意天氣"
+        msg = "您好, \n降雨機率來到了" + result +"%！\n請安心繼續讓衣服持續曝曬，降雨時再呼喚我們。\n\n不過，也許你想收衣服了，那請點以下連結告訴我。\n\n\n------Best Regards, 收衣機"
+    elif result > 0.8:
+        sub = "【我的天，要下雨啦】趕快收衣服"
+        msg = "您好, \n降雨機率來到了" + result +"%！\n我們強烈建議您點選以下網址，告訴我們您的決定。\n\n\n\n------Best Regards, 收衣機"
+    
+    cli = boto3.client('sns', region_name="us-east-1")
+    response = client.publish(
+        TopicArn='arn:aws:sns:us-east-1:099287135517:finalproj',
+        Message=msg,
+        Subject=sub,
+        MessageStructure='string'
+    )
 
 if __name__ == "__main__":
     application.debug = True
