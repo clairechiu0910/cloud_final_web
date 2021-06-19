@@ -25,14 +25,14 @@ def notifications():
 def data_history():
     return render_template('data_history.html')
 
-@application.route('/api/t_h/d/')
+@application.route('/api/t_h/d/', methods=['GET'])
 def get_temperature_humidity():
     time, himidity, temperature = ArduinoDataRepo().get_today_data()
-    data = json.dumps({
+    data = {
         'time': time,
         'himidity': himidity,
         'temperature': temperature
-    })
+    }
     return jsonify(data)
 
 # @application.route('/api/pred/d/')
@@ -49,8 +49,6 @@ def get_temperature_humidity():
 #     print(result)
 
 #     return jsonify(result)
-
-
 
 if __name__ == "__main__":
     application.debug = True
