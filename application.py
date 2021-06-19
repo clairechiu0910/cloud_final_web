@@ -51,7 +51,10 @@ def get_model_pred(t_h):
     result = json.loads(response['Body'].read().decode())
     result = str(result)
     
-    return result
+    model_pred = {
+        'prediction_result': result
+    }
+    return jsonify(model_pred)
     
 
 if __name__ == "__main__":
