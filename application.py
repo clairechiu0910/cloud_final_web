@@ -1,8 +1,7 @@
-from flask import Flask, render_template, jsonify
+ zfrom flask import Flask, render_template, jsonify
 from ddbRepo import ArduinoDataRepo
 import json
 import boto3 
-
 
 application = Flask(__name__)
 jinja_options = application.jinja_options.copy()
@@ -27,10 +26,10 @@ def data_history():
 
 @application.route('/api/t_h/d/', methods=['GET'])
 def get_temperature_humidity():
-    time, himidity, temperature = ArduinoDataRepo().get_today_data()
+    time, humidity, temperature = ArduinoDataRepo().get_today_data()
     data = {
         'time': time,
-        'himidity': himidity,
+        'humidity': humidity,
         'temperature': temperature
     }
     return jsonify(data)
@@ -40,9 +39,9 @@ def get_model_pred(t_h):
     import boto3 
     import json 
     # return t_h 
-    endpoint = 'xgboost-2021-06-18-13-39-26-663'
-    aws_access_key_id='AKIARO6BBYISFZ4Q4Y76'
-    aws_secret_access_key='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'
+    endpoint = ''
+    aws_access_key_id=''
+    aws_secret_access_key=''
 
     runtime = boto3.client('sagemaker-runtime', region_name="us-east-1", aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
     csv_text = '12, 90, 6'

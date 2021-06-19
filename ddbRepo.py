@@ -13,14 +13,17 @@ class ArduinoDataRepo():
             FilterExpression=Attr('day').eq(datetime.now().day)
         )
         items = response['Items']
-        himidity = list()
-        temperature = list()
+        print(type(items))
+        items.sort(key=lambda item: datetime.strptime(item['time'], '%Y/%m/%d %H:%M:%S'))
         time = list()
+        humidity = list()
+        temperature = list()
         for item in items:
-            time.append(item['time'])
-            himidity.append(float(item['humidity']))
+            get_time = datetime.strptime(item['time'], '%Y/%m/%d %H:%M:%S')
+            time.append(get_time.strftime("%Y/%m/%d %H:%M")),
+            humidity.append(float(item['humidity']))
             temperature.append(float(item['temperature']))
-        return time, himidity, temperature
+        return time, humidity, temperature
     
 if __name__ == '__main__':
     print(ArduinoDataRepo().get_today_data())
