@@ -3,7 +3,6 @@ from ddbRepo import ArduinoDataRepo
 import json
 import boto3 
 
-
 application = Flask(__name__)
 jinja_options = application.jinja_options.copy()
 jinja_options.update(dict(
@@ -27,10 +26,10 @@ def data_history():
 
 @application.route('/api/t_h/d/', methods=['GET'])
 def get_temperature_humidity():
-    time, himidity, temperature = ArduinoDataRepo().get_today_data()
+    time, humidity, temperature = ArduinoDataRepo().get_today_data()
     data = {
         'time': time,
-        'himidity': himidity,
+        'humidity': humidity,
         'temperature': temperature
     }
     return jsonify(data)
