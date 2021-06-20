@@ -7,13 +7,14 @@
   <link rel="icon" type="image/png" href="/static/img/favicon.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
-    Notifications
+    Rain Info
   </title>
-  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
-
+  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
+    name='viewport' />
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
+    integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
   <!-- CSS Files -->
   <link href="/static/css/bootstrap.min.css" rel="stylesheet" />
   <link href="/static/css/now-ui-dashboard.css?v=1.5.0" rel="stylesheet" />
@@ -33,8 +34,8 @@
         <ul class="nav">
           <li class="active">
             <a href="/notifications">
-              <i class="now-ui-icons ui-1_bell-53"></i>
-              <p>Notifications</p>
+              <i class="now-ui-icons objects_umbrella-13"></i>
+              <p>Rain Info</p>
             </a>
           <li>
             <a href="/data_history">
@@ -56,7 +57,7 @@
                 <span class="navbar-toggler-bar bar3"></span>
               </button>
             </div>
-            <a class="navbar-brand">Notifications</a>
+            <a class="navbar-brand">Raining Detection and Rredictions</a>
           </div>
           <div class="collapse navbar-collapse justify-content-end" id="navigation">
           </div>
@@ -64,7 +65,7 @@
       </nav>
       <div class="panel-header">
         <div class="header text-center">
-          <h2 class="title">Notifications</h2>
+          <h2 class="title">Raining Information</h2>
           <p class="category">Weather predictions and rain detections.</p>
         </div>
       </div>
@@ -76,11 +77,16 @@
                 <h4 class="card-title">Weather Predictions</h4>
               </div>
               <div class="card-body">
-                <div class="alert alert-info">
-                  <span>This is a plain notification</span>
-                </div>
-                <div class='text-center'>
-                  <button class='btn btn-outline-info' id='collect'>Collect</button>
+                <div id="model-app">
+                  <template v-for="item in model_results">
+                    <div class="alert alert-info">
+                      <h6>{{item.date}}</h6>
+                      <span><b> Probability - </b> {{item.result}}</span>
+                    </div>
+                  </template>
+                  <div class='text-center'>
+                    <button class='btn btn-outline-info' id='collect'>Collect</button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -91,53 +97,108 @@
                 <h4 class="card-title">Rain Detections</h4>
               </div>
               <div class="card-body">
-                <div class="alert alert-danger">
-                  <button type="button" aria-hidden="true" class="close">
-                    <i class="now-ui-icons ui-1_simple-remove"></i>
-                  </button>
-                  <span><b> Danger - </b> This is a regular notification made with ".alert-danger"</span>
+                <div id="pi-app">
+                  <template v-for="item in pi_states">
+                    <template v-if="item.is_rain">
+                      <div class="alert alert-warning">
+                        <h6>{{item.date}}</h6>
+                        <span>{{item.rain}} {{item.cloth}}</span>
+                      </div>
+                    </template>
+                    <template v-else>
+                      <div class="alert alert-info">
+                        <h6>{{item.date}}</h6>
+                        <span>{{item.rain}} {{item.cloth}}</span>
+                      </div>
+                    </template>
+                  </template>
                 </div>
               </div>
             </div>
           </div>
-    </div>
-  </div>
-  <!--   Core JS Files   -->
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        </div>
+      </div>
+      <!--   Core JS Files   -->
+      <script src="/static/js/core/jquery.min.js"></script>
+      <script src="/static/js/core/popper.min.js"></script>
+      <script src="/static/js/core/bootstrap.min.js"></script>
+      <script src="/static/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+      <!-- Chart JS -->
+      <script src="/static/js/plugins/chartjs.min.js"></script>
+      <!--  Notifications Plugin    -->
+      <script src="/static/js/plugins/bootstrap-notify.js"></script>
+      <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
+      <script src="/static/js/now-ui-dashboard.min.js?v=1.5.0" type="text/javascript"></script>
+      <!-- Now Ui Dashboard DEMO methods, don't include it in your project! -->
+      <script src="/static/demo/demo.js"></script>
 
-  <script src="/static/js/core/jquery.min.js"></script>
-  <script src="/static/js/core/popper.min.js"></script>
-  <script src="/static/js/core/bootstrap.min.js"></script>
-  <script src="/static/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-  <!--  Google Maps Plugin    -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
-  <!-- Chart JS -->
-  <script src="/static/js/plugins/chartjs.min.js"></script>
-  <!--  Notifications Plugin    -->
-  <script src="/static/js/plugins/bootstrap-notify.js"></script>
-  <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="/static/js/now-ui-dashboard.min.js?v=1.5.0" type="text/javascript"></script><!-- Now Ui Dashboard DEMO methods, don't include it in your project! -->
-  <script src="/static/demo/demo.js"></script>
+      <!--  Apexcharts and Vue  -->
+      <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+      <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+      <script src="https://cdn.jsdelivr.net/npm/vue-apexcharts"></script>
+
+      <script>
+        axios({
+            method: 'get',
+            url: '/api/pi/',
+            'Content-Type': 'text/html'
+          })
+          .then(function (response) {
+            console.log(response.data);
+            pi_app.pi_states = response.data;
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+
+        var pi_app = new Vue({
+          el: '#pi-app',
+          data: {
+            pi_states: null
+          }
+        })
+
+        axios({
+            method: 'get',
+            url: '/api/model/',
+            'Content-Type': 'text/html'
+          })
+          .then(function (response) {
+            console.log(response.data);
+            model_app.model_results = response.data;
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+
+        var model_app = new Vue({
+          el: '#model-app',
+          data: {
+            model_results: null
+          }
+        })
+      </script>
+
+      <script>
+        document.getElementById('collect').onclick = function () {
+          axios({
+              method: 'get',
+              url: '/api/collect',
+              'Content-Type': 'text/html'
+            })
+            .then(function (response) {
+              console.log(response.status);
+              if (response.status == 200) {
+                window.alert("收衣怪獸已經在幫您收衣服囉！請耐心等待他一下!!")
+                window.location = "/"
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        }
+      </script>
 </body>
-<script>
-  document.getElementById('collect').onclick = function() {
-    axios({
-      method: 'get',
-      url: '/api/collect',
-      'Content-Type': 'text/html'
-    })
-    .then(function (response) {
-      console.log(response.status);
-      if(response.status == 200){
-        window.alert("收衣怪獸已經幫您收好衣服囉！")
-        window.location = "/"
-      } 
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-  }
-  
-</script>
 
 </html>

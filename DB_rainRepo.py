@@ -19,7 +19,7 @@ class DB_rainRepo():
         
     def is_rain(self):
         response = self.table.scan(
-            FilterExpression=Attr('motor_state').between(0, 1)
+            FilterExpression=Attr('rain_state').between(0, 1)
         )
         items = response['Items']
         
@@ -31,7 +31,7 @@ class DB_rainRepo():
 
     def get_all_data(self):
         response = self.table.scan(
-            FilterExpression=Attr('motor_state').between(0, 1)
+            FilterExpression=Attr('rain_state').between(0, 1)
         )
         items = response['Items']
         
@@ -40,13 +40,15 @@ class DB_rainRepo():
         states = list()        
         for item in items:
             is_rain = False
+            is_collected = False
             rain = "No rain detected."
             if item['rain_state'] == RAINING:
                 is_rain = True
                 rain = "It's raining outside."
             
             clothes = "The clothes is swinging outside."
-            if item['motor_state'] == IS_CLOTHES_COLLECTED:
+            if item['motor_state'] == str(IS_CLOTHES_COLLECTED) or item['motor_state'] == IS_CLOTHES_COLLECTED:
+                is_collected = True
                 clothes = "The clothes is collected."
             
             states.append({
