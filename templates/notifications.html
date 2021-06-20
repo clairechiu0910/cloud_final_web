@@ -85,12 +85,30 @@
               </div>
               <div class="card-body">
                 <div id="model-app">
-                  <template v-for="item in model_results">
-                    <div class="alert alert-info">
-                      <h6>{{item.date}}</h6>
-                      <span><b> Probability - </b> {{item.result}}</span>
-                    </div>
-                  </template>
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead class=" text-primary">
+                        <th>
+                          Datetime
+                        </th>
+                        <th>
+                          Probability
+                        </th>
+                      </thead>
+                      <tbody>
+                        <template v-for="item in model_results">
+                          <tr>
+                            <td>
+                              {{item.date}}
+                            </td>
+                            <td>
+                              {{item.result}}
+                            </td>
+                          </tr>
+                        </template>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>
