@@ -122,14 +122,13 @@
 <script>
   document.getElementById('collect').onclick = function() {
     axios({
-      method: 'post',
+      method: 'get',
       url: '/api/collect',
       'Content-Type': 'text/html'
     })
     .then(function (response) {
       console.log(response.status);
-      console.log(reponse.data);
-      if(response.data == 200){
+      if(response.status == 200){
         window.alert("收衣怪獸已經幫您收好衣服囉！")
         window.location = "/"
       } 

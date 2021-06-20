@@ -1,6 +1,7 @@
 from flask import Flask, render_template, jsonify
 from flask import request
 from ArduinoDataRepo import ArduinoDataRepo
+from collectClothesSQS import collectClothesSQS
 import json
 import boto3 
 
@@ -35,17 +36,9 @@ def get_temperature_humidity():
     }
     return jsonify(data)
 
-@application.route('/api/collect/', methods=['POST'])
+@application.route('/api/collect/', methods=['GET'])
 def do_collect():
-    sqs_client = boto3.client('sqs', region_name="us-east-1")
-    reponse = sqs_client.send_message(
-        QueueName = "collectClothes", 
-        MessageBody='',
-        DelaySeconds=1,
-    )
-    re = {
-        'state': 200
-    }
+    re = collectClothesSQS().send_message('collect')
     return jsonify(re)
 
     
