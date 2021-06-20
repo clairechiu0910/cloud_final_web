@@ -5,7 +5,7 @@ class collectClothesSQS():
     def __init__(self):
         queue_name = 'collectClothes'
         
-        sqs = boto3.resource('sqs')
+        sqs = boto3.resource('sqs', region_name='us-east-1')
         self.queue = sqs.get_queue_by_name(QueueName=queue_name)   
 
     def send_message(self, message_body, message_attributes=None):
