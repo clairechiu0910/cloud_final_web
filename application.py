@@ -1,6 +1,8 @@
 from flask import Flask, render_template, jsonify
 from flask import request
 from ArduinoDataRepo import ArduinoDataRepo
+from DB_rainRepo import DB_rainRepo
+from predictionRepo import predictionRepo
 import json
 import boto3 
 
@@ -35,6 +37,16 @@ def get_temperature_humidity():
     }
     return jsonify(data)
 
+@application.route('/api/pi/', methods=['GET'])
+def get_pi_all_data():
+    states = DB_rainRepo().get_all_data()
+    return jsonify(states)
+
+@application.route('/api/model/', methods=['GET'])
+def get_model_all_data():
+    results = predictionRepo().get_all_data()
+    return jsonify(results)
+
 @application.route('/api/pred/', methods=['GET'])
 def get_model_pred():
     import boto3 
@@ -44,8 +56,8 @@ def get_model_pred():
     # tmp = 30
     # hum = 90
     endpoint = 'xgboost-2021-06-18-13-39-26-663'
-    aws_access_key_id='AKIARO6BBYISNMJHSKIJ'
-    aws_secret_access_key='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'
+    aws_access_key_id=''
+    aws_secret_access_key=''
 
     runtime = boto3.client('sagemaker-runtime', region_name="us-east-1", aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
 

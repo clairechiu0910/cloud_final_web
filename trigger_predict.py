@@ -1,6 +1,5 @@
-import json
-import boto3 
 
+<<<<<<< HEAD
 def lambda_handler(event, context):
 
     # [{'eventID': '92bf12dea780af7020a1cf035991f858', 'eventName': 'INSERT', 'eventVersion': '1.1', 
@@ -83,3 +82,5 @@ def write_ddb(time, result):
     )
     return response
     
+=======
+>>>>>>> 40d982bef3509d6173ce6222f514a81fb18c391e
