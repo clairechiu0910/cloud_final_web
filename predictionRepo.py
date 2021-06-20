@@ -11,14 +11,14 @@ class predictionRepo():
         
     def get_all_data(self):
         response = self.table.scan(
-            FilterExpression=Attr('propability').lt(120)
+            FilterExpression=Attr('propability').exists()
         )
         items = response['Items']
-        items.sort(key=lambda item: datetime.strptime(item['datetime'], '%Y%m%d%H%M%S'), reverse=True)
+        items.sort(key=lambda item: datetime.strptime(item['datetime'], '%Y/%m/%d %H:%M:%S'), reverse=True)
         
         predicts = list()
         for item in items:
-            get_time = datetime.strptime(item['datetime'], '%Y%m%d%H%M%S')
+            get_time = datetime.strptime(item['datetime'], '%Y/%m/%d %H:%M:%S')
             predicts.append({
                 'date': get_time.strftime("%Y/%m/%d %H:%M:%S"),
                 'result': float(item['propability'])
