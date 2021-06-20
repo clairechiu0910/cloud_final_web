@@ -37,7 +37,8 @@ class DB_rainRepo():
         
         items.sort(key=lambda item: datetime.strptime(item['date'], '%Y/%m/%d %H:%M:%S'), reverse=True)
         
-        states = list()        
+        states = list()      
+        count = 20  
         for item in items:
             is_rain = False
             is_collected = False
@@ -57,6 +58,10 @@ class DB_rainRepo():
                 'rain': rain,
                 'cloth': clothes
             })
+            
+            
+            count = count -1 
+            if count <= 0: break
         
         return states
     
