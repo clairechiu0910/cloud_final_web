@@ -1,5 +1,4 @@
 
-<<<<<<< HEAD
 def lambda_handler(event, context):
 
     # [{'eventID': '92bf12dea780af7020a1cf035991f858', 'eventName': 'INSERT', 'eventVersion': '1.1', 
@@ -20,8 +19,8 @@ def lambda_handler(event, context):
    
 
     endpoint = 'xgboost-2021-06-18-13-39-26-663'
-    aws_access_key_id='AKIARO6BBYISNMJHSKIJ'
-    aws_secret_access_key='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'
+    aws_access_key_id=''
+    aws_secret_access_key=''
 
     runtime = boto3.client('sagemaker-runtime', region_name="us-east-1", aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
 
@@ -82,5 +81,3 @@ def write_ddb(time, result):
     )
     return response
     
-=======
->>>>>>> 40d982bef3509d6173ce6222f514a81fb18c391e

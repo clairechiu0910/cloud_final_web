@@ -10,6 +10,7 @@
     Notifications
   </title>
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
@@ -121,22 +122,19 @@
 <script>
   document.getElementById('collect').onclick = function() {
     axios({
-      method: 'get',
-      url: 'https://yvagi4uyp6.execute-api.us-east-1.amazonaws.com/default/iot_mqtt?fbclid=IwAR0FzZVBZR7oAoKxeWAZlhNEv7zcCN6P4n2p9ri_L7hdRWwX13srriGYeLY',
+      method: 'post',
+      url: '/api/collect',
       'Content-Type': 'text/html'
-
     })
     .then(function (response) {
       console.log(response.status);
       console.log(reponse.data);
-      if(response.status == 200){
+      if(response.data == 200){
         window.alert("收衣怪獸已經幫您收好衣服囉！")
-        window.location = "/notification"
+        window.location = "/"
       } 
     })
     .catch(function (error) {
-      window.alert("收衣服的過程遇到怪獸！請再點一次收衣服！")
-      window.location = "/notification"
       console.log(error);
     });
   }

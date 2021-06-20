@@ -1,8 +1,6 @@
 from flask import Flask, render_template, jsonify
 from flask import request
 from ArduinoDataRepo import ArduinoDataRepo
-from DB_rainRepo import DB_rainRepo
-from predictionRepo import predictionRepo
 import json
 import boto3 
 
@@ -37,27 +35,31 @@ def get_temperature_humidity():
     }
     return jsonify(data)
 
-@application.route('/api/pi/', methods=['GET'])
-def get_pi_all_data():
-    states = DB_rainRepo().get_all_data()
-    return jsonify(states)
+@application.route('/api/collect/', methods=['POST'])
+def do_collect():
+    sqs_client = boto3.client('sqs', region_name="us-east-1")
+    reponse = sqs_client.send_message(
+        QueueName = "collectClothes", 
+        MessageBody='',
+        DelaySeconds=1,
+    )
+    re = {
+        'state': 200
+    }
+    return jsonify(200)
 
-@application.route('/api/model/', methods=['GET'])
-def get_model_all_data():
-    results = predictionRepo().get_all_data()
-    return jsonify(results)
 
 @application.route('/api/pred/', methods=['GET'])
 def get_model_pred():
     import boto3 
     import json 
-    tmp, hum = ArduinoDataRepo().get_latest_data()
+    # tmp, hum = ArduinoDataRepo().get_latest_data()
     
-    # tmp = 30
-    # hum = 90
+    tmp = 30
+    hum = 90
     endpoint = 'xgboost-2021-06-18-13-39-26-663'
-    aws_access_key_id=''
-    aws_secret_access_key=''
+    aws_access_key_id='AKIARO6BBYISAGPKSZMI'
+    aws_secret_access_key='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'
 
     runtime = boto3.client('sagemaker-runtime', region_name="us-east-1", aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
 
@@ -82,6 +84,10 @@ def get_model_pred():
 def send_mail_to_notify(result):
     result = result * 100 
     result = float("{0:.2f}".format(result))
+    # 這邊是 educate account 的 credential
+    # aws_access_key_id='ASIAROHPZOUOQUHRVCJ3'
+    # aws_secret_access_key='cmziVhzrnhD25dteQ1A2p2iV60tHMzejWcC3x+SV'
+    # aws_session_token = 'FwoGZXIvYXdzENn//////////wEaDCgO7snLM9M46sb60CLLATQ7tbqkHtIcpAshCAyxx4Rget07MRVofwqMJDAz0J4CyC/IAVVFrxYcyPmD89MdKr7ZpkrDY72GUYbyvx2cfwtBYoudqKmFmgZXj8UrGkBiY9HZqEYpgBac7oXSQC/lQDJiimBMiqqy4GrB8KWGZwWN3hHwuhPfrVOFx2T8W+8XF9VezUN62nZ3KcZhstEGtZy7CxAxcTjZfKrzNo+mG1392PT1Z2jdp2ai5FLHk2PidhShE6DsVdxAZmxbkHI7OtA+0F8jyQGh/1FzKPuluIYGMi0PUzeq6K1kcmW5jJzGXtv4Drf726uvN/IJsEXQtEGGpOE07YPUPlRh6/OjxNw='
     if result <= 50:
         # 低機率會下雨
         sub = "【保持平常心】您的衣服正在曝曬中"
@@ -93,6 +99,7 @@ def send_mail_to_notify(result):
         sub = "【我的天，要下雨啦】趕快收衣服"
         msg = "您好, \n降雨機率來到了" + str(result) +"%！\n我們強烈建議您點選以下網址，告訴我們您的決定。\nhttp://finalgroup5.us-east-1.elasticbeanstalk.com/notifications\n\n\n\n------\nBest Regards, 收衣機"
     
+    # cli = boto3.client('sns', region_name="us-east-1", aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key, aws_session_token=aws_session_token)
     cli = boto3.client('sns', region_name="us-east-1")
 
     response = cli.publish(
