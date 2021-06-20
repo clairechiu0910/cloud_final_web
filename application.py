@@ -44,8 +44,8 @@ def get_model_pred():
     # tmp = 30
     # hum = 90
     endpoint = 'xgboost-2021-06-18-13-39-26-663'
-    aws_access_key_id=''
-    aws_secret_access_key=''
+    aws_access_key_id='AKIARO6BBYISNMJHSKIJ'
+    aws_secret_access_key='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'
 
     runtime = boto3.client('sagemaker-runtime', region_name="us-east-1", aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
 

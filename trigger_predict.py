@@ -2,14 +2,27 @@ import json
 import boto3 
 
 def lambda_handler(event, context):
+
+    # [{'eventID': '92bf12dea780af7020a1cf035991f858', 'eventName': 'INSERT', 'eventVersion': '1.1', 
+    # 'eventSource': 'aws:dynamodb', 'awsRegion': 'us-east-1', 
+    # 'dynamodb': {'ApproximateCreationDateTime': 1624129628.0, 'Keys': {'datetime': {'S': '202106200307\n'}},
+    #     'NewImage': {'hum': {'S': '50'}, 'datetime': {'S': '202106200307\n'},
+    #     'tmp': {'S': '30'}}, 
+    #     'SequenceNumber': '12000000000038370426878', 'SizeBytes': 52, 'StreamViewType': 'NEW_AND_OLD_IMAGES'},
+    #     'eventSourceARN': 'arn:aws:dynamodb:us-east-1:099287135517:table/weather_data/stream/2021-06-19T19:04:51.816'}]
+
+    print(event)
     region_name = "us-east-1"
-    time = event['time']
-    tmp = event['tmp']
-    hum = event['hum']
+    re = event['Records'][0]
+    print(re)
+    tmp = re['dynamodb']['NewImage']['temperature']['N']
+    hum = re['dynamodb']['NewImage']['humidity']['N']
+    time = re['dynamodb']['NewImage']['time']['S']
+   
 
     endpoint = 'xgboost-2021-06-18-13-39-26-663'
-    aws_access_key_id='AKIARO6BBYISAGPKSZMI'
-    aws_secret_access_key='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'
+    aws_access_key_id='AKIARO6BBYISNMJHSKIJ'
+    aws_secret_access_key='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'
 
     runtime = boto3.client('sagemaker-runtime', region_name="us-east-1", aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
 
