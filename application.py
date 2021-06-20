@@ -48,38 +48,6 @@ def do_collect():
     }
     return jsonify(200)
 
-
-@application.route('/api/pred/', methods=['GET'])
-def get_model_pred():
-    import boto3 
-    import json 
-    # tmp, hum = ArduinoDataRepo().get_latest_data()
-    
-    tmp = 30
-    hum = 90
-    endpoint = 'xgboost-2021-06-18-13-39-26-663'
-    aws_access_key_id='AKIARO6BBYISAGPKSZMI'
-    aws_secret_access_key='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'
-
-    runtime = boto3.client('sagemaker-runtime', region_name="us-east-1", aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
-
-    text = str(tmp) + ',' + str(hum) + ',10'
-    
-    
-    response = runtime.invoke_endpoint(EndpointName=endpoint, ContentType='text/csv', Body=text)
-    result = json.loads(response['Body'].read().decode())
-    result_float = float(result)
-
-    #sns
-    send_mail_to_notify(result_float)
-    
-    result = str(result)
-
-
-    model_pred = {
-        'prediction_result': result
-    }
-    return jsonify(model_pred)
     
 def send_mail_to_notify(result):
     result = result * 100 
