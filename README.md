@@ -18,4 +18,4 @@ The automatic clothes collection system is a sw-hw integrated system based on AW
 - Automatic clothes collection via raindrop detector and a serial of IoT devices
 
 ## Demo Video 
-[![Watch the video](https://imgur.com/a/2IrWlv9)](https://drive.google.com/drive/u/0/folders/1ClahDqXPLQcTaFWGCgPxxURKCwlz04Tk)
+[![Watch the video](https://imgur.com/a/2IrWlv9)](https://drive.google.com/file/d/1Ur0fw2NjhbK2-1sFuRyEDaml3LoEtTQn/view?usp=sharing)
