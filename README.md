@@ -10,12 +10,12 @@ The automatic clothes collection system is a sw-hw integrated system based on AW
 
 ## Features
 - Humidity and Temperature collection
-- Data Visualization
-<img src="https://user-images.githubusercontent.com/36917138/139879407-9df33bbe-9695-4b1f-a0b6-a0e6a368b6d2.png" alt="drawing" width="400"/>
-<img src="https://user-images.githubusercontent.com/36917138/139879671-a87803df-943c-4403-90dd-6e443052cf35.png" alt="drawing" width="400"/>
 - Weather prediction based on collected data (by AWS Sagemaker & XGBoost)
 - Manual control on clothes collection via website
 - Automatic clothes collection via raindrop detector and a serial of IoT devices
+- Data Visualization
+<img src="https://user-images.githubusercontent.com/36917138/139879407-9df33bbe-9695-4b1f-a0b6-a0e6a368b6d2.png" alt="drawing" width="400"/>
+<img src="https://user-images.githubusercontent.com/36917138/139879671-a87803df-943c-4403-90dd-6e443052cf35.png" alt="drawing" width="400"/>
 
 ## Demo Video 
 [![Watch the video](https://imgur.com/a/2IrWlv9)](https://drive.google.com/file/d/1Ur0fw2NjhbK2-1sFuRyEDaml3LoEtTQn/view?usp=sharing)
