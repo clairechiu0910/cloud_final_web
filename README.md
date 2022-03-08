@@ -18,4 +18,4 @@ The automatic clothes collection system is a sw-hw integrated system based on AW
 <img src="https://user-images.githubusercontent.com/36917138/139879671-a87803df-943c-4403-90dd-6e443052cf35.png" alt="drawing" width="400"/>
 
 ## Demo Video 
-[![Watch the video](https://imgur.com/a/2IrWlv9)](https://drive.google.com/file/d/1Ur0fw2NjhbK2-1sFuRyEDaml3LoEtTQn/view?usp=sharing)
+[![Watch the video](https://user-images.githubusercontent.com/43478709/157214156-57a5ac49-2631-47e4-9f4f-95748cbc1aa1.png)](https://drive.google.com/file/d/1Ur0fw2NjhbK2-1sFuRyEDaml3LoEtTQn/view?usp=sharing)
