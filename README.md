@@ -6,7 +6,7 @@ The automatic clothes collection system is a sw-hw integrated system based on AW
 
 ## Content
 - System Workflow
-![Frame 1(11)](https://user-images.githubusercontent.com/36917138/139883808-3780b479-9f03-484e-9cb0-aa9b4af9e4c3.png)
+![Architecture](https://user-images.githubusercontent.com/43478709/195094600-8f33b7d7-0976-40b2-b07a-c98cc53a66e5.png)
 
 ## Features
 - Humidity and Temperature collection
